@@ -13,19 +13,19 @@
     font-size="48" font-weight="800"
     letter-spacing="-2"
     y="56">
-    <tspan fill="#f59e0b" x="20">L</tspan><tspan fill="#0a0a0a">UNIQ</tspan>
+    <tspan fill="#f59e0b" x="20">L</tspan><tspan fill="#ffffff">UNIQ</tspan>
   </text>
 
   <!-- Hairline divider -->
   <line x1="20" y1="64" x2="268" y2="64"
-    stroke="#e0e0dc" stroke-width="0.75"/>
+    stroke="#1c1c1c" stroke-width="0.75"/>
 
   <!-- Descriptor: INTELIGENCIA FINANCEIRA -->
   <text
     x="20" y="78"
     font-family="'DM Mono', monospace"
     font-size="8.5" font-weight="400"
-    fill="#b4b4b0"
+    fill="#282828"
     letter-spacing="3">INTELIGENCIA FINANCEIRA</text>
 
 </svg>
