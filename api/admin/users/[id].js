@@ -13,10 +13,13 @@ function adminClient() {
 async function verifyAdmin(authHeader) {
   if (!authHeader?.startsWith('Bearer ')) return false
   const token = authHeader.slice(7)
+  // Valida o JWT com o anon key
   const supa = createClient(SUPABASE_URL, ANON_KEY)
   const { data: { user }, error } = await supa.auth.getUser(token)
   if (error || !user) return false
-  const { data: profile } = await supa
+  // Usa o service role para buscar o perfil (bypassa RLS)
+  const admin = adminClient()
+  const { data: profile } = await admin
     .from('profiles')
     .select('role')
     .eq('id', user.id)

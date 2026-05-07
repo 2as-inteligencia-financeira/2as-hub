@@ -1,6 +1,6 @@
 .container {
   min-height: 100vh;
-  background: #0a0a0f;
+  background: #0a0a0a;
   display: flex;
   flex-direction: column;
 }
@@ -13,7 +13,7 @@
   padding: 0 32px;
   height: 60px;
   border-bottom: 1px solid rgba(255,255,255,.07);
-  background: rgba(17,17,24,.8);
+  background: rgba(11,11,11,.8);
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
@@ -38,9 +38,9 @@
 .userEmail { font-size: 13px; color: rgba(255,255,255,.4); }
 
 .badge {
-  font-size: 11px; font-weight: 600; color: #a78bfa;
-  background: rgba(139,92,246,.15);
-  border: 1px solid rgba(139,92,246,.3);
+  font-size: 11px; font-weight: 600; color: #f59e0b;
+  background: rgba(245,158,11,.15);
+  border: 1px solid rgba(245,158,11,.3);
   border-radius: 20px; padding: 2px 10px;
 }
 
@@ -76,18 +76,18 @@
 .sectionSub   { font-size: 14px; color: rgba(255,255,255,.35); margin: 0; }
 
 .createBtn {
-  background: #7c3aed;
+  background: #f59e0b;
   border: none;
   border-radius: 10px;
-  color: #fff;
+  color: #0a0a0a;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   padding: 10px 20px;
   cursor: pointer;
   transition: background .2s;
   white-space: nowrap;
 }
-.createBtn:hover { background: #6d28d9; }
+.createBtn:hover { background: #fbbf24; }
 
 /* ── Feedback ── */
 .successBanner {
@@ -113,7 +113,7 @@
 
 /* ── Table ── */
 .tableWrap {
-  background: #111118;
+  background: #111111;
   border: 1px solid rgba(255,255,255,.07);
   border-radius: 14px;
   overflow: hidden;
@@ -149,9 +149,9 @@
 .muted { color: rgba(255,255,255,.2); font-size: 13px; }
 
 .roleAdmin {
-  font-size: 11px; font-weight: 600; color: #a78bfa;
-  background: rgba(139,92,246,.15);
-  border: 1px solid rgba(139,92,246,.25);
+  font-size: 11px; font-weight: 600; color: #f59e0b;
+  background: rgba(245,158,11,.15);
+  border: 1px solid rgba(245,158,11,.25);
   border-radius: 20px; padding: 3px 10px;
 }
 .roleUser {
@@ -189,7 +189,7 @@
 }
 
 .modal {
-  background: #14141e;
+  background: #161616;
   border: 1px solid rgba(255,255,255,.1);
   border-radius: 16px;
   width: 100%; max-width: 480px;
@@ -233,9 +233,9 @@
   width: 100%;
 }
 .input::placeholder { color: rgba(255,255,255,.2); }
-.input:focus, .select:focus { border-color: rgba(139,92,246,.5); }
+.input:focus, .select:focus { border-color: rgba(245,158,11,.5); }
 .select { cursor: pointer; }
-.select option { background: #14141e; }
+.select option { background: #161616; }
 
 .panelsField { display: flex; flex-direction: column; gap: 10px; }
 .panelOptions { display: flex; flex-direction: column; gap: 8px; }
@@ -248,7 +248,7 @@
 }
 .checkRow input[type="checkbox"] {
   width: 16px; height: 16px; cursor: pointer;
-  accent-color: #7c3aed;
+  accent-color: #f59e0b;
 }
 
 .errorMsg {
@@ -284,13 +284,13 @@
 .cancelBtn:hover { background: rgba(255,255,255,.09); color: #fff; }
 
 .saveBtn {
-  background: #7c3aed;
+  background: #f59e0b;
   border: none; border-radius: 9px;
-  color: #fff; font-size: 14px; font-weight: 600;
+  color: #0a0a0a; font-size: 14px; font-weight: 700;
   padding: 10px 20px; cursor: pointer;
   transition: background .2s;
 }
-.saveBtn:hover:not(:disabled) { background: #6d28d9; }
+.saveBtn:hover:not(:disabled) { background: #fbbf24; }
 .saveBtn:disabled { opacity: .5; cursor: not-allowed; }
 
 .deleteBtn {

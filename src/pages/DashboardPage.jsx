@@ -8,18 +8,18 @@ const ALL_PANELS = [
   {
     slug: 'financas',
     label: 'Luniq Finanças',
-    description: 'Planejamento financeiro pessoal e metas',
-    icon: '💰',
+    description: 'Gestão financeira, DRE, fluxo de caixa e indicadores',
+    icon: '📊',
     url: import.meta.env.VITE_URL_FINANCAS || '#',
-    color: '#059669',
+    color: '#f59e0b',
   },
   {
     slug: 'aulas',
     label: 'Gestão de Aulas',
-    description: 'Professores, turmas e orçamentos',
+    description: 'Professores, turmas, agendamentos e orçamentos',
     icon: '🎓',
     url: import.meta.env.VITE_URL_AULAS || '#',
-    color: '#d97706',
+    color: '#2fb7c6',
   },
   {
     slug: 'brand',
@@ -27,7 +27,7 @@ const ALL_PANELS = [
     description: 'Identidade visual, logos e apresentações',
     icon: '🎨',
     url: import.meta.env.VITE_URL_BRAND || '#',
-    color: '#db2777',
+    color: '#22c55e',
   },
 ]
 
@@ -86,6 +86,7 @@ export default function DashboardPage() {
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <img src="/luniq-logo.svg" alt="Luniq" className={styles.logo} />
+          <div className={styles.headerSep} />
           <span className={styles.headerLabel}>Hub de Painéis</span>
         </div>
         <div className={styles.headerRight}>
