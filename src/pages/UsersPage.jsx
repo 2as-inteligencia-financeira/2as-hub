@@ -17,18 +17,36 @@ const ROLES = [
 
 const EMPTY_FORM = { nome: '', email: '', password: '', role: 'user', panels: [] }
 
+// Detecta a base URL da API (mesma origin em produção, localhost em dev)
+const API_BASE = import.meta.env.PROD ? '' : 'http://localhost:3000'
+
+async function apiRequest(path, method, body, token) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  })
+  const json = await res.json()
+  if (!res.ok) throw new Error(json.error || `Erro ${res.status}`)
+  return json
+}
+
 export default function UsersPage() {
   const { user, profile, signOut } = useAuth()
   const navigate = useNavigate()
 
-  const [users, setUsers]       = useState([])
-  const [loading, setLoading]   = useState(true)
-  const [modal, setModal]       = useState(null)   // null | 'create' | 'edit'
+  const [users, setUsers]           = useState([])
+  const [loading, setLoading]       = useState(true)
+  const [modal, setModal]           = useState(null)   // null | 'create' | 'edit'
   const [editTarget, setEditTarget] = useState(null)
-  const [form, setForm]         = useState(EMPTY_FORM)
-  const [saving, setSaving]     = useState(false)
-  const [error, setError]       = useState('')
-  const [success, setSuccess]   = useState('')
+  const [form, setForm]             = useState(EMPTY_FORM)
+  const [saving, setSaving]         = useState(false)
+  const [deleting, setDeleting]     = useState(false)
+  const [error, setError]           = useState('')
+  const [success, setSuccess]       = useState('')
 
   // Redireciona não-admin
   useEffect(() => {
@@ -37,25 +55,24 @@ export default function UsersPage() {
 
   useEffect(() => { loadUsers() }, [])
 
+  async function getToken() {
+    const { data: { session } } = await supabase.auth.getSession()
+    return session?.access_token
+  }
+
   async function loadUsers() {
     setLoading(true)
-    const { data: profiles } = await supabase
-      .from('profiles')
-      .select('*')
-      .order('nome')
-
-    const { data: panelRows } = await supabase
-      .from('user_panels')
-      .select('user_id, panel')
-
-    const panelMap = {}
-    ;(panelRows || []).forEach(r => {
-      if (!panelMap[r.user_id]) panelMap[r.user_id] = []
-      panelMap[r.user_id].push(r.panel)
-    })
-
-    setUsers((profiles || []).map(p => ({ ...p, panels: panelMap[p.id] || [] })))
-    setLoading(false)
+    try {
+      const token = await getToken()
+      const data = await apiRequest('/api/admin/users', 'GET', null, token)
+      // Ordena por nome
+      data.sort((a, b) => (a.nome || a.email).localeCompare(b.nome || b.email))
+      setUsers(data)
+    } catch (err) {
+      console.error('Erro ao carregar usuários:', err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   // ── Criar usuário ──────────────────────────────────────────────
@@ -71,31 +88,16 @@ export default function UsersPage() {
     setSaving(true)
     setError('')
     try {
-      // 1. Cria o usuário no Auth
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email: form.email,
+      const token = await getToken()
+      await apiRequest('/api/admin/users', 'POST', {
+        nome:     form.nome,
+        email:    form.email,
         password: form.password,
-        options: { data: { nome: form.nome } },
-      })
-      if (signUpError) throw signUpError
+        role:     form.role,
+        panels:   form.panels,
+      }, token)
 
-      const uid = data.user?.id
-      if (!uid) throw new Error('Usuário não retornou ID.')
-
-      // 2. Cria/atualiza perfil
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .upsert({ id: uid, email: form.email, nome: form.nome, role: form.role })
-      if (profileError) throw profileError
-
-      // 3. Insere painéis liberados
-      if (form.panels.length > 0) {
-        const rows = form.panels.map(p => ({ user_id: uid, panel: p }))
-        const { error: panelError } = await supabase.from('user_panels').insert(rows)
-        if (panelError) throw panelError
-      }
-
-      setSuccess(`Usuário ${form.email} criado! Ele receberá um e-mail de confirmação.`)
+      setSuccess(`Usuário ${form.email} criado com sucesso!`)
       setModal(null)
       loadUsers()
     } catch (err) {
@@ -119,19 +121,15 @@ export default function UsersPage() {
     setSaving(true)
     setError('')
     try {
-      // Atualiza perfil
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({ nome: form.nome, role: form.role })
-        .eq('id', editTarget.id)
-      if (profileError) throw profileError
-
-      // Recria painéis
-      await supabase.from('user_panels').delete().eq('user_id', editTarget.id)
-      if (form.panels.length > 0) {
-        const rows = form.panels.map(p => ({ user_id: editTarget.id, panel: p }))
-        await supabase.from('user_panels').insert(rows)
+      const token = await getToken()
+      const body = {
+        nome:   form.nome,
+        role:   form.role,
+        panels: form.panels,
       }
+      if (form.password) body.password = form.password
+
+      await apiRequest(`/api/admin/users/${editTarget.id}`, 'PATCH', body, token)
 
       setSuccess(`Usuário ${form.email} atualizado.`)
       setModal(null)
@@ -140,6 +138,25 @@ export default function UsersPage() {
       setError(err.message || 'Erro ao salvar.')
     } finally {
       setSaving(false)
+    }
+  }
+
+  // ── Deletar usuário ────────────────────────────────────────────
+  async function handleDelete() {
+    if (!editTarget) return
+    if (!window.confirm(`Tem certeza que deseja remover ${editTarget.email}? Esta ação não pode ser desfeita.`)) return
+    setDeleting(true)
+    setError('')
+    try {
+      const token = await getToken()
+      await apiRequest(`/api/admin/users/${editTarget.id}`, 'DELETE', null, token)
+      setSuccess(`Usuário ${editTarget.email} removido.`)
+      setModal(null)
+      loadUsers()
+    } catch (err) {
+      setError(err.message || 'Erro ao remover usuário.')
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -201,6 +218,7 @@ export default function UsersPage() {
                   <th>E-mail</th>
                   <th>Perfil</th>
                   <th>Painéis</th>
+                  <th>Último acesso</th>
                   <th></th>
                 </tr>
               </thead>
@@ -231,6 +249,11 @@ export default function UsersPage() {
                           })}
                         </div>
                       )}
+                    </td>
+                    <td className={styles.muted}>
+                      {u.last_sign_in
+                        ? new Date(u.last_sign_in).toLocaleDateString('pt-BR')
+                        : '—'}
                     </td>
                     <td>
                       <button className={styles.editBtn} onClick={() => openEdit(u)}>Editar</button>
@@ -266,7 +289,7 @@ export default function UsersPage() {
                   />
                 </label>
 
-                {modal === 'create' && (
+                {modal === 'create' ? (
                   <>
                     <label className={styles.label}>
                       E-mail
@@ -293,6 +316,18 @@ export default function UsersPage() {
                       />
                     </label>
                   </>
+                ) : (
+                  <label className={styles.label}>
+                    Nova senha (opcional)
+                    <input
+                      className={styles.input}
+                      type="password"
+                      value={form.password}
+                      onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
+                      placeholder="Deixe em branco para não alterar"
+                      minLength={6}
+                    />
+                  </label>
                 )}
 
                 <label className={styles.label}>
@@ -330,10 +365,20 @@ export default function UsersPage() {
               {error && <p className={styles.errorMsg}>{error}</p>}
 
               <div className={styles.modalFooter}>
+                {modal === 'edit' && (
+                  <button
+                    type="button"
+                    className={styles.deleteBtn}
+                    onClick={handleDelete}
+                    disabled={deleting || saving}
+                  >
+                    {deleting ? 'Removendo…' : 'Remover'}
+                  </button>
+                )}
                 <button type="button" className={styles.cancelBtn} onClick={closeModal}>
                   Cancelar
                 </button>
-                <button type="submit" className={styles.saveBtn} disabled={saving}>
+                <button type="submit" className={styles.saveBtn} disabled={saving || deleting}>
                   {saving ? 'Salvando…' : modal === 'create' ? 'Criar usuário' : 'Salvar alterações'}
                 </button>
               </div>
