@@ -94,7 +94,10 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Senha deve ter pelo menos 6 caracteres.' })
       }
       const { error: authError } = await supa.auth.admin.updateUserById(id, { password })
-      if (authError) return res.status(400).json({ error: authError.message })
+      if (authError) {
+        console.error('[admin/users/[id]] updateUserById:', authError.message)
+        return res.status(400).json({ error: 'Erro ao atualizar senha.' })
+      }
     }
 
     const profileUpdate = {}
@@ -105,7 +108,10 @@ export default async function handler(req, res) {
     if (Object.keys(profileUpdate).length > 0) {
       const { error: profileError } = await supa
         .from('profiles').update(profileUpdate).eq('id', id)
-      if (profileError) return res.status(400).json({ error: profileError.message })
+      if (profileError) {
+        console.error('[admin/users/[id]] profile update:', profileError.message)
+        return res.status(400).json({ error: 'Erro ao atualizar perfil.' })
+      }
     }
 
     // Fix 3: filtra slugs inválidos
@@ -115,7 +121,10 @@ export default async function handler(req, res) {
       if (safePanels.length > 0) {
         const { error: panelError } = await supa
           .from('user_panels').insert(safePanels.map(p => ({ user_id: id, panel: p })))
-        if (panelError) return res.status(400).json({ error: panelError.message })
+        if (panelError) {
+          console.error('[admin/users/[id]] panel insert:', panelError.message)
+          return res.status(400).json({ error: 'Erro ao atualizar painéis.' })
+        }
       }
     }
 
@@ -127,7 +136,10 @@ export default async function handler(req, res) {
     await supa.from('user_panels').delete().eq('user_id', id)
     await supa.from('profiles').delete().eq('id', id)
     const { error: deleteError } = await supa.auth.admin.deleteUser(id)
-    if (deleteError) return res.status(400).json({ error: deleteError.message })
+    if (deleteError) {
+      console.error('[admin/users/[id]] deleteUser:', deleteError.message)
+      return res.status(400).json({ error: 'Erro ao remover usuário.' })
+    }
     return res.status(200).json({ ok: true })
   }
 

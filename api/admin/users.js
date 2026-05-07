@@ -79,7 +79,10 @@ export default async function handler(req, res) {
   // ── GET → lista usuários ──────────────────────────────────────────────────
   if (req.method === 'GET') {
     const { data: { users }, error: authError } = await supa.auth.admin.listUsers()
-    if (authError) return res.status(500).json({ error: authError.message })
+    if (authError) {
+      console.error('[admin/users] listUsers:', authError.message)
+      return res.status(500).json({ error: 'Erro ao carregar usuários.' })
+    }
 
     const { data: profiles } = await supa.from('profiles').select('*')
     const { data: panelRows } = await supa.from('user_panels').select('user_id, panel')
@@ -128,7 +131,14 @@ export default async function handler(req, res) {
       email_confirm: true,
       user_metadata: { nome },
     })
-    if (createError) return res.status(400).json({ error: createError.message })
+    if (createError) {
+      console.error('[admin/users] createUser:', createError.message)
+      // Preserva mensagens de validação úteis para o admin; descarta erros internos
+      const safeMsg = ['User already registered', 'Invalid email'].some(m => createError.message?.includes(m))
+        ? createError.message
+        : 'Erro ao criar usuário.'
+      return res.status(400).json({ error: safeMsg })
+    }
 
     await supa.from('profiles').upsert({
       id: user.id, email, nome: nome || '', role: safeRole,
