@@ -1,6 +1,19 @@
+:root {
+  --bg:    #050505;
+  --surf:  #0f0f0f;
+  --card:  #161616;
+  --brd:   #1e1e1e;
+  --brd2:  #2a2a2a;
+  --sub:   #aaaaaa;
+  --muted: #666666;
+  --dim:   #444444;
+  --amber: #f59e0b;
+  --amber2:#fbbf24;
+}
+
 .container {
   min-height: 100vh;
-  background: #0a0a0a;
+  background: var(--bg);
   display: flex;
   flex-direction: column;
 }
@@ -12,8 +25,8 @@
   justify-content: space-between;
   padding: 0 32px;
   height: 60px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(11, 11, 11, 0.85);
+  border-bottom: 1px solid var(--brd);
+  background: rgba(5, 5, 5, 0.95);
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
@@ -23,196 +36,239 @@
 .headerLeft {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .logo {
-  height: 30px;
+  display: flex;
+  align-items: baseline;
+  line-height: 1;
+}
+
+.logoL {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--amber);
+  letter-spacing: -0.04em;
+}
+
+.logoU {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.04em;
 }
 
 .headerSep {
   width: 1px;
-  height: 18px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 16px;
+  background: var(--brd2);
 }
 
 .headerLabel {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.25);
-  font-weight: 500;
-  letter-spacing: .04em;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--dim);
   text-transform: uppercase;
 }
 
 .headerRight {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 .userEmail {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.35);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
 }
 
 .badge {
-  font-size: 11px;
-  font-weight: 600;
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.25);
-  border-radius: 20px;
-  padding: 2px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  color: var(--amber);
+  text-transform: uppercase;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  padding: 3px 10px;
 }
 
 .adminBtn {
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid rgba(245, 158, 11, 0.25);
-  border-radius: 8px;
-  color: #f59e0b;
-  font-size: 13px;
-  font-weight: 500;
+  background: transparent;
+  border: 1px solid var(--brd2);
+  color: var(--sub);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
   padding: 6px 14px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.18s;
+  text-transform: uppercase;
 }
 
 .adminBtn:hover {
-  background: rgba(245, 158, 11, 0.18);
-  color: #fbbf24;
+  border-color: var(--amber);
+  color: var(--amber);
 }
 
 .signOutBtn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 8px;
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 13px;
+  background: transparent;
+  border: 1px solid var(--brd);
+  color: var(--dim);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
   padding: 6px 14px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.18s;
+  text-transform: uppercase;
 }
 
 .signOutBtn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.8);
+  border-color: var(--brd2);
+  color: var(--sub);
 }
 
 /* ── Main ── */
 .main {
   flex: 1;
-  padding: 56px 32px;
-  max-width: 960px;
+  padding: 64px 32px;
+  max-width: 1080px;
   margin: 0 auto;
   width: 100%;
 }
 
 .welcome {
-  margin-bottom: 48px;
+  margin-bottom: 56px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--brd);
+}
+
+.welcomeEyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--amber);
+  text-transform: uppercase;
+  margin-bottom: 12px;
 }
 
 .welcome h1 {
-  font-size: 30px;
+  font-size: clamp(28px, 4vw, 42px);
   font-weight: 800;
   color: #fff;
   margin: 0 0 8px;
-  letter-spacing: -.02em;
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
 .welcome p {
-  font-size: 15px;
-  color: rgba(255, 255, 255, 0.35);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--muted);
   margin: 0;
 }
 
-/* ── Grid de painéis ── */
+/* ── Grid — 1px gap editorial ── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px;
+  background: var(--brd); /* gap visual via background */
 }
 
 .card {
   display: flex;
-  align-items: center;
-  gap: 18px;
-  background: #111111;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 14px;
-  padding: 24px 20px;
+  flex-direction: column;
+  gap: 20px;
+  background: var(--card);
+  padding: 32px 28px;
   cursor: pointer;
   text-align: left;
-  transition: border-color .2s, background .2s, transform .2s, box-shadow .2s;
+  border: none;
   position: relative;
   overflow: hidden;
+  transition: background 0.18s;
 }
 
+/* Linha âmbar no topo — aparece no hover */
 .card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 2px;
-  background: var(--accent);
+  background: var(--accent, var(--amber));
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity 0.18s;
 }
 
 .card:hover {
-  border-color: rgba(255, 255, 255, 0.13);
-  background: #161616;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  background: #1a1a1a;
 }
 
 .card:hover::before {
   opacity: 1;
 }
 
-.cardIcon {
-  font-size: 30px;
-  flex-shrink: 0;
-  line-height: 1;
+.cardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.cardNum {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+.cardArrow {
+  font-size: 14px;
+  color: var(--brd2);
+  transition: color 0.18s, transform 0.18s;
+}
+
+.card:hover .cardArrow {
+  color: var(--sub);
+  transform: translateX(3px);
 }
 
 .cardBody {
   flex: 1;
-  min-width: 0;
 }
 
 .cardTitle {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   color: #fff;
-  margin: 0 0 4px;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
 }
 
 .cardDesc {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.3);
+  font-weight: 300;
+  color: var(--muted);
   margin: 0;
-  line-height: 1.45;
-}
-
-.cardArrow {
-  color: rgba(255, 255, 255, 0.18);
-  font-size: 18px;
-  flex-shrink: 0;
-  transition: transform 0.2s, color 0.2s;
-}
-
-.card:hover .cardArrow {
-  transform: translateX(4px);
-  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.65;
 }
 
 /* ── Estados ── */
 .loading, .empty {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 15px;
-  padding: 64px 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+  padding: 80px 0;
   text-align: center;
+  text-transform: uppercase;
 }
 
-.empty p { margin: 5px 0; }
+.empty p { margin: 6px 0; }

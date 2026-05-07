@@ -191,9 +191,10 @@ export default function UsersPage() {
       <main className={styles.main}>
         {/* Toolbar */}
         <div className={styles.toolbar}>
-          <div>
-            <h2 className={styles.sectionTitle}>Usuários cadastrados</h2>
-            <p className={styles.sectionSub}>{users.length} usuário{users.length !== 1 ? 's' : ''} no sistema</p>
+          <div className={styles.toolbarLeft}>
+            <p className={styles.eyebrow}>Gestão de acesso</p>
+            <h2 className={styles.sectionTitle}>Usuários</h2>
+            <p className={styles.sectionSub}>{users.length} usuário{users.length !== 1 ? 's' : ''} cadastrado{users.length !== 1 ? 's' : ''}</p>
           </div>
           <button className={styles.createBtn} onClick={openCreate}>+ Novo usuário</button>
         </div>

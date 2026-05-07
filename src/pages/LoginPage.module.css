@@ -3,43 +3,90 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0a0a0a;
-  background-image: radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.12) 0%, transparent 60%);
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(245, 158, 11, 0.1) 0%, transparent 65%),
+    #050505;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dot grid pattern — igual à LP */
+.container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(30, 30, 30, 0.7) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
 }
 
 .card {
-  background: #111111;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
+  background: #0f0f0f;
+  border: 1px solid #1e1e1e;
   padding: 48px 40px;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+/* Linha âmbar no topo do card */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: #f59e0b;
 }
 
 .logo {
   display: flex;
+  align-items: baseline;
   justify-content: center;
-  margin-bottom: 36px;
+  margin-bottom: 40px;
+  line-height: 1;
+  gap: 0;
 }
 
-.logo img {
-  height: 44px;
+.logoL {
+  font-size: 28px;
+  font-weight: 800;
+  color: #f59e0b;
+  letter-spacing: -0.04em;
+}
+
+.logoU {
+  font-size: 28px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.04em;
+}
+
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: #f59e0b;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .title {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 800;
   color: #fff;
   text-align: center;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
+  letter-spacing: -0.03em;
 }
 
 .subtitle {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  font-weight: 300;
+  color: #666;
   text-align: center;
-  margin: 0 0 32px;
+  margin: 0 0 36px;
 }
 
 .form {
@@ -51,59 +98,63 @@
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
 }
 
 .field label {
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.45);
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: #555;
   text-transform: uppercase;
-  letter-spacing: .05em;
 }
 
 .field input {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 9px;
+  background: #161616;
+  border: 1px solid #1e1e1e;
   padding: 12px 14px;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 300;
   color: #fff;
   outline: none;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.18s;
+  border-radius: 0;
+  width: 100%;
 }
 
 .field input::placeholder {
-  color: rgba(255, 255, 255, 0.2);
+  color: #333;
 }
 
 .field input:focus {
-  border-color: rgba(245, 158, 11, 0.5);
-  background: rgba(245, 158, 11, 0.04);
+  border-color: #f59e0b;
 }
 
 .error {
-  font-size: 13px;
-  color: #f87171;
-  background: rgba(248, 113, 113, 0.08);
-  border: 1px solid rgba(248, 113, 113, 0.2);
-  border-radius: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.07);
+  border: 1px solid rgba(239, 68, 68, 0.18);
   padding: 10px 12px;
   margin: 0;
+  letter-spacing: 0.03em;
 }
 
 .btn {
   background: #f59e0b;
-  color: #0a0a0a;
+  color: #050505;
   border: none;
-  border-radius: 9px;
   padding: 13px;
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
   cursor: pointer;
-  transition: background 0.2s, opacity 0.2s;
+  transition: background 0.18s;
   margin-top: 4px;
-  letter-spacing: .01em;
+  border-radius: 0;
+  text-transform: uppercase;
 }
 
 .btn:hover:not(:disabled) {
@@ -111,6 +162,6 @@
 }
 
 .btn:disabled {
-  opacity: 0.45;
+  opacity: 0.4;
   cursor: not-allowed;
 }

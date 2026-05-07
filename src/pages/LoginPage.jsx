@@ -19,7 +19,7 @@ export default function LoginPage() {
       await signIn(email, password)
       navigate('/dashboard')
     } catch (err) {
-      setError(err.message || 'Erro ao entrar. Verifique suas credenciais.')
+      setError(err.message || 'Credenciais inválidas.')
     } finally {
       setLoading(false)
     }
@@ -29,11 +29,13 @@ export default function LoginPage() {
     <div className={styles.container}>
       <div className={styles.card}>
         <div className={styles.logo}>
-          <img src="/luniq-logo.svg" alt="Luniq" />
+          <span className={styles.logoL}>L</span>
+          <span className={styles.logoU}>UNIQ</span>
         </div>
 
-        <h1 className={styles.title}>Acesso restrito</h1>
-        <p className={styles.subtitle}>Entre com sua conta Luniq</p>
+        <p className={styles.eyebrow}>Acesso restrito</p>
+        <h1 className={styles.title}>Entre na plataforma</h1>
+        <p className={styles.subtitle}>Inteligência Financeira · Hub de painéis</p>
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.field}>

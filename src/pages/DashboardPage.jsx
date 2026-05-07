@@ -8,8 +8,8 @@ const ALL_PANELS = [
   {
     slug: 'financas',
     label: 'Luniq Finanças',
-    description: 'Gestão financeira, DRE, fluxo de caixa e indicadores',
-    icon: '📊',
+    description: 'DRE, fluxo de caixa, margens e indicadores em tempo real',
+    num: 'Painel 01',
     url: import.meta.env.VITE_URL_FINANCAS || '#',
     color: '#f59e0b',
   },
@@ -17,7 +17,7 @@ const ALL_PANELS = [
     slug: 'aulas',
     label: 'Gestão de Aulas',
     description: 'Professores, turmas, agendamentos e orçamentos',
-    icon: '🎓',
+    num: 'Painel 02',
     url: import.meta.env.VITE_URL_AULAS || '#',
     color: '#2fb7c6',
   },
@@ -25,7 +25,7 @@ const ALL_PANELS = [
     slug: 'brand',
     label: 'Brand Studio',
     description: 'Identidade visual, logos e apresentações',
-    icon: '🎨',
+    num: 'Painel 03',
     url: import.meta.env.VITE_URL_BRAND || '#',
     color: '#22c55e',
   },
@@ -41,21 +41,18 @@ export default function DashboardPage() {
     async function loadPanels() {
       if (!user) return
 
-      // Busca perfil direto (ignora cache do context para garantir role atualizado)
       const { data: prof } = await supabase
         .from('profiles')
         .select('role')
         .eq('id', user.id)
         .single()
 
-      // Admin vê tudo
       if (prof?.role === 'admin') {
         setAllowedPanels(ALL_PANELS)
         setLoading(false)
         return
       }
 
-      // Busca painéis liberados para o usuário
       const { data } = await supabase
         .from('user_panels')
         .select('panel')
@@ -71,7 +68,6 @@ export default function DashboardPage() {
 
   function openPanel(panel) {
     if (panel.url === '#') return
-    // Passa o token Supabase via URL para o painel autenticar automaticamente
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) return
       const url = new URL(panel.url)
@@ -85,9 +81,12 @@ export default function DashboardPage() {
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          <img src="/luniq-logo.svg" alt="Luniq" className={styles.logo} />
+          <div className={styles.logo}>
+            <span className={styles.logoL}>L</span>
+            <span className={styles.logoU}>UNIQ</span>
+          </div>
           <div className={styles.headerSep} />
-          <span className={styles.headerLabel}>Hub de Painéis</span>
+          <span className={styles.headerLabel}>Hub de painéis</span>
         </div>
         <div className={styles.headerRight}>
           <span className={styles.userEmail}>{user?.email}</span>
@@ -107,7 +106,8 @@ export default function DashboardPage() {
 
       <main className={styles.main}>
         <div className={styles.welcome}>
-          <h1>Olá{profile?.nome ? `, ${profile.nome}` : ''} 👋</h1>
+          <p className={styles.welcomeEyebrow}>Luniq Inteligência Financeira</p>
+          <h1>Olá{profile?.nome ? `, ${profile.nome.split(' ')[0]}` : ''}.</h1>
           <p>Selecione o painel que deseja acessar</p>
         </div>
 
@@ -127,12 +127,14 @@ export default function DashboardPage() {
                 onClick={() => openPanel(panel)}
                 style={{ '--accent': panel.color }}
               >
-                <span className={styles.cardIcon}>{panel.icon}</span>
+                <div className={styles.cardTop}>
+                  <span className={styles.cardNum}>{panel.num}</span>
+                  <span className={styles.cardArrow}>→</span>
+                </div>
                 <div className={styles.cardBody}>
                   <h2 className={styles.cardTitle}>{panel.label}</h2>
                   <p className={styles.cardDesc}>{panel.description}</p>
                 </div>
-                <span className={styles.cardArrow}>→</span>
               </button>
             ))}
           </div>
