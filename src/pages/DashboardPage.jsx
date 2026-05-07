@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabase } from '../lib/supabase'
@@ -31,11 +31,27 @@ const ALL_PANELS = [
   },
 ]
 
+// Fix 1: origens autorizadas a receber o token via postMessage
+// Adicione aqui cada domínio de painel que o hub pode abrir
+const TRUSTED_PANEL_ORIGINS = [
+  'https://financas.luniqfinancas.com',
+  'https://aulas.luniqfinancas.com',
+  'https://brand.luniqfinancas.com',
+  'https://direcao.luniqfinancas.com',
+  // Dev local
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'http://localhost:4173',
+]
+
 export default function DashboardPage() {
   const { user, profile, signOut } = useAuth()
   const navigate = useNavigate()
   const [allowedPanels, setAllowedPanels] = useState([])
   const [loading, setLoading] = useState(true)
+  // Mantém referência para cleanup dos listeners de postMessage
+  const listenersRef = useRef([])
 
   useEffect(() => {
     async function loadPanels() {
@@ -66,14 +82,56 @@ export default function DashboardPage() {
     if (user) loadPanels()
   }, [user])
 
+  // Cleanup de todos os listeners ao desmontar
+  useEffect(() => {
+    return () => {
+      listenersRef.current.forEach(({ handler, timeout }) => {
+        window.removeEventListener('message', handler)
+        clearTimeout(timeout)
+      })
+    }
+  }, [])
+
+  // Fix 1: abre painel e entrega token via postMessage, nunca via URL
   function openPanel(panel) {
     if (panel.url === '#') return
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) return
-      const url = new URL(panel.url)
-      url.searchParams.set('sb_access_token', session.access_token)
-      url.searchParams.set('sb_refresh_token', session.refresh_token)
-      window.open(url.toString(), '_blank')
+
+      // Abre a janela — sem nenhum token na URL
+      const win = window.open(panel.url, '_blank')
+      if (!win) return // pop-up bloqueado
+
+      const handler = (event) => {
+        // Verifica se a origem é confiável
+        if (!TRUSTED_PANEL_ORIGINS.includes(event.origin)) return
+        if (event.data?.type !== 'painel:ready') return
+
+        // Envia token apenas para a origem que mandou o ping
+        win.postMessage(
+          {
+            type:          'painel:token',
+            access_token:  session.access_token,
+            refresh_token: session.refresh_token,
+          },
+          event.origin // restringe o destino à origem exata do painel
+        )
+
+        cleanup()
+      }
+
+      // Timeout de segurança: remove o listener após 30s mesmo sem resposta
+      const timeout = setTimeout(cleanup, 30_000)
+
+      function cleanup() {
+        window.removeEventListener('message', handler)
+        clearTimeout(timeout)
+        listenersRef.current = listenersRef.current.filter(l => l.handler !== handler)
+      }
+
+      window.addEventListener('message', handler)
+      listenersRef.current.push({ handler, timeout })
     })
   }
 

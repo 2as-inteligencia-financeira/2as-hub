@@ -11,6 +11,7 @@ export default function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+
           <Route
             path="/dashboard"
             element={
@@ -19,14 +20,17 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Fix 4: /users exige role admin — redireciona não-admins para /dashboard */}
           <Route
             path="/users"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="admin">
                 <UsersPage />
               </ProtectedRoute>
             }
           />
+
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </AuthProvider>
