@@ -31,18 +31,19 @@ const ALL_PANELS = [
   },
 ]
 
-// Fix 1: origens autorizadas a receber o token via postMessage
-// Adicione aqui cada domínio de painel que o hub pode abrir
+// Fix 1 + BAIXO-04: origens autorizadas a receber token via postMessage
+// Em produção, apenas domínios reais. localhost só em dev (Vite: import.meta.env.DEV)
 const TRUSTED_PANEL_ORIGINS = [
   'https://financas.luniqfinancas.com',
   'https://aulas.luniqfinancas.com',
   'https://brand.luniqfinancas.com',
   'https://direcao.luniqfinancas.com',
-  // Dev local
-  'http://localhost:5173',
-  'http://localhost:5174',
-  'http://localhost:5175',
-  'http://localhost:4173',
+  ...(import.meta.env.DEV ? [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:4173',
+  ] : []),
 ]
 
 export default function DashboardPage() {
