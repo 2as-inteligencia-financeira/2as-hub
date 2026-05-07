@@ -1,19 +1,6 @@
-:root {
-  --bg:    #050505;
-  --surf:  #0f0f0f;
-  --card:  #161616;
-  --brd:   #1e1e1e;
-  --brd2:  #2a2a2a;
-  --sub:   #aaaaaa;
-  --muted: #666666;
-  --dim:   #444444;
-  --amber: #f59e0b;
-  --amber2:#fbbf24;
-}
-
 .container {
   min-height: 100vh;
-  background: var(--bg);
+  background: #f0f0ea;
   display: flex;
   flex-direction: column;
 }
@@ -25,9 +12,8 @@
   justify-content: space-between;
   padding: 0 32px;
   height: 60px;
-  border-bottom: 1px solid var(--brd);
-  background: rgba(5, 5, 5, 0.95);
-  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #e2e2dc;
+  background: #fafaf7;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -48,28 +34,28 @@
 .logoL {
   font-size: 22px;
   font-weight: 800;
-  color: var(--amber);
+  color: #f59e0b;
   letter-spacing: -0.04em;
 }
 
 .logoU {
   font-size: 22px;
   font-weight: 800;
-  color: #fff;
+  color: #0a0a0a;
   letter-spacing: -0.04em;
 }
 
 .headerSep {
   width: 1px;
   height: 16px;
-  background: var(--brd2);
+  background: #d0d0ca;
 }
 
 .headerLabel {
   font-family: 'DM Mono', monospace;
   font-size: 9px;
   letter-spacing: 0.18em;
-  color: var(--dim);
+  color: #999999;
   text-transform: uppercase;
 }
 
@@ -82,7 +68,7 @@
 .userEmail {
   font-family: 'DM Mono', monospace;
   font-size: 10px;
-  color: var(--muted);
+  color: #606060;
   letter-spacing: 0.04em;
 }
 
@@ -91,17 +77,17 @@
   font-size: 9px;
   font-weight: 400;
   letter-spacing: 0.16em;
-  color: rgba(255, 255, 255, 0.7);
+  color: #606060;
   text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid #d0d0ca;
   padding: 3px 10px;
 }
 
 .adminBtn {
   background: transparent;
-  border: 1px solid var(--brd2);
-  color: var(--sub);
+  border: 1px solid #d0d0ca;
+  color: #606060;
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
@@ -112,14 +98,14 @@
 }
 
 .adminBtn:hover {
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #fff;
+  border-color: #999999;
+  color: #0a0a0a;
 }
 
 .signOutBtn {
   background: transparent;
-  border: 1px solid var(--brd);
-  color: var(--dim);
+  border: 1px solid #e2e2dc;
+  color: #999999;
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
@@ -130,8 +116,8 @@
 }
 
 .signOutBtn:hover {
-  border-color: var(--brd2);
-  color: var(--sub);
+  border-color: #d0d0ca;
+  color: #606060;
 }
 
 /* ── Main ── */
@@ -146,14 +132,14 @@
 .welcome {
   margin-bottom: 56px;
   padding-bottom: 32px;
-  border-bottom: 1px solid var(--brd);
+  border-bottom: 1px solid #e2e2dc;
 }
 
 .welcomeEyebrow {
   font-family: 'DM Mono', monospace;
   font-size: 9px;
   letter-spacing: 0.2em;
-  color: rgba(255, 255, 255, 0.35);
+  color: #999999;
   text-transform: uppercase;
   margin-bottom: 12px;
 }
@@ -161,7 +147,7 @@
 .welcome h1 {
   font-size: clamp(28px, 4vw, 42px);
   font-weight: 800;
-  color: #fff;
+  color: #0a0a0a;
   margin: 0 0 8px;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -170,7 +156,7 @@
 .welcome p {
   font-size: 14px;
   font-weight: 300;
-  color: var(--muted);
+  color: #606060;
   margin: 0;
 }
 
@@ -179,14 +165,14 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1px;
-  background: var(--brd); /* gap visual via background */
+  background: #e2e2dc; /* gap visual via background */
 }
 
 .card {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background: var(--card);
+  background: #ffffff;
   padding: 32px 28px;
   cursor: pointer;
   text-align: left;
@@ -202,13 +188,13 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: var(--accent, var(--amber));
+  background: #f59e0b;
   opacity: 0;
   transition: opacity 0.18s;
 }
 
 .card:hover {
-  background: #1a1a1a;
+  background: #fafaf7;
 }
 
 .card:hover::before {
@@ -225,18 +211,18 @@
   font-family: 'DM Mono', monospace;
   font-size: 9px;
   letter-spacing: 0.2em;
-  color: var(--dim);
+  color: #999999;
   text-transform: uppercase;
 }
 
 .cardArrow {
   font-size: 14px;
-  color: var(--brd2);
+  color: #d0d0ca;
   transition: color 0.18s, transform 0.18s;
 }
 
 .card:hover .cardArrow {
-  color: var(--sub);
+  color: #606060;
   transform: translateX(3px);
 }
 
@@ -247,7 +233,7 @@
 .cardTitle {
   font-size: 18px;
   font-weight: 800;
-  color: #fff;
+  color: #0a0a0a;
   margin: 0 0 8px;
   letter-spacing: -0.02em;
 }
@@ -255,7 +241,7 @@
 .cardDesc {
   font-size: 12px;
   font-weight: 300;
-  color: var(--muted);
+  color: #606060;
   margin: 0;
   line-height: 1.65;
 }
@@ -265,7 +251,7 @@
   font-family: 'DM Mono', monospace;
   font-size: 11px;
   letter-spacing: 0.1em;
-  color: var(--dim);
+  color: #999999;
   padding: 80px 0;
   text-align: center;
   text-transform: uppercase;
