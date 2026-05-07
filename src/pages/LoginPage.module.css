@@ -66,7 +66,7 @@
   font-family: 'DM Mono', monospace;
   font-size: 9px;
   letter-spacing: 0.2em;
-  color: #f59e0b;
+  color: rgba(255, 255, 255, 0.4);
   text-transform: uppercase;
   text-align: center;
   margin-bottom: 10px;

@@ -54,9 +54,9 @@
   font-family: 'DM Mono', monospace;
   font-size: 9px;
   letter-spacing: 0.16em;
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 3px 10px;
   text-transform: uppercase;
 }
@@ -101,7 +101,7 @@
   font-family: 'DM Mono', monospace;
   font-size: 9px;
   letter-spacing: 0.2em;
-  color: #f59e0b;
+  color: rgba(255, 255, 255, 0.35);
   text-transform: uppercase;
   margin-bottom: 8px;
 }
@@ -219,9 +219,9 @@
   font-family: 'DM Mono', monospace;
   font-size: 9px;
   letter-spacing: 0.14em;
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.2);
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 3px 10px;
   text-transform: uppercase;
 }
