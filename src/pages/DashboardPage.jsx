@@ -150,8 +150,8 @@ export default function DashboardPage() {
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <div className={styles.logo}>
-            <span className={styles.logoL}>L</span>
-            <span className={styles.logoU}>UNIQ</span>
+            <span className={styles.logoL}>2</span>
+            <span className={styles.logoU}>AS</span>
           </div>
           <div className={styles.headerSep} />
           <span className={styles.headerLabel}>Hub de painéis</span>
