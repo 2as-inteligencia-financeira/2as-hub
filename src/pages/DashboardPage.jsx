@@ -31,13 +31,22 @@ const ALL_PANELS = [
   },
 ]
 
-// Fix 1 + BAIXO-04: origens autorizadas a receber token via postMessage
-// Em produção, apenas domínios reais. localhost só em dev (Vite: import.meta.env.DEV)
+// Origens autorizadas a receber token via postMessage.
+// Ao trocar domínio, manter uma lista fixa costuma quebrar (a origem real muda).
+// Aqui derivamos as origens a partir das URLs configuradas via VITE_URL_*.
 const TRUSTED_PANEL_ORIGINS = [
-  'https://financas.luniqfinancas.com',
-  'https://aulas.luniqfinancas.com',
-  'https://brand.luniqfinancas.com',
-  'https://direcao.luniqfinancas.com',
+  ...(() => {
+    const origins = new Set()
+    for (const panel of ALL_PANELS) {
+      if (!panel?.url || panel.url === '#') continue
+      try {
+        origins.add(new URL(panel.url).origin)
+      } catch {
+        // Ignora URLs inválidas/placeholder
+      }
+    }
+    return [...origins]
+  })(),
   ...(import.meta.env.DEV ? [
     'http://localhost:5173',
     'http://localhost:5174',

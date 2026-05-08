@@ -6,7 +6,8 @@ const ANON_KEY     = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_
 
 // ── Fix 2: CORS restrito ao domínio do hub ──────────────────────────────────
 const ALLOWED_ORIGINS = [
-  'https://hub.luniqfinancas.com',
+  'https://hub.2asfinancas.com',
+  'https://app.2asfinancas.com',
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:3000',
