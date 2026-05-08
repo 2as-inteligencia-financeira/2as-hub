@@ -17,7 +17,8 @@ const ANON_KEY     = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_
 
 // Origens dos painéis autorizados a buscar credenciais
 const ALLOWED_ORIGINS = [
-  'https://direcao.luniqfinancas.com',
+  'https://painel-direcaoconcursos.vercel.app',
+  'https://direcao.2asfinancas.com',
   ...(process.env.NODE_ENV !== 'production' ? [
     'http://localhost:5173',
     'http://localhost:5174',

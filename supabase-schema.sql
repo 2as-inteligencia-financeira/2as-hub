@@ -35,10 +35,23 @@ create trigger on_auth_user_created
 create table if not exists public.user_panels (
   id         bigint generated always as identity primary key,
   user_id    uuid not null references auth.users(id) on delete cascade,
-  panel      text not null check (panel in ('painel', 'financas', 'admissao', 'aulas', 'brand')),
+  panel      text not null check (panel in ('painel', 'financas', 'admissao', 'aulas', 'brand', 'direcao')),
   granted_at timestamptz default now(),
   unique (user_id, panel)
 );
+
+-- IMPORTANTE: em projetos já existentes, o "create table if not exists"
+-- não atualiza constraints antigas. Este bloco força a atualização do CHECK
+-- para incluir o painel "direcao" e evitar erro 23514 em inserts/updates.
+do $$
+begin
+  alter table public.user_panels
+    drop constraint if exists user_panels_panel_check;
+
+  alter table public.user_panels
+    add constraint user_panels_panel_check
+    check (panel in ('painel', 'financas', 'admissao', 'aulas', 'brand', 'direcao'));
+end $$;
 
 -- 3. RLS — Row Level Security
 alter table public.profiles enable row level security;
