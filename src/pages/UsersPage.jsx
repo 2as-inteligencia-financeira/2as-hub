@@ -8,6 +8,7 @@ const PANELS = [
   { slug: 'financas', label: '2AS Finanças', icon: '💰' },
   { slug: 'aulas',   label: 'Gestão de Aulas', icon: '🎓' },
   { slug: 'brand',   label: 'Brand Studio',    icon: '🎨' },
+  { slug: 'direcao', label: 'Direção Concursos', icon: '📊' },
 ]
 
 const ROLES = [
