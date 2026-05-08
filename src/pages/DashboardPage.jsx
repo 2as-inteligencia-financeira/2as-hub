@@ -37,6 +37,14 @@ const ALL_PANELS = [
     url: import.meta.env.VITE_URL_DIRECAO || 'https://painel-direcaoconcursos.vercel.app',
     color: '#ff6600',
   },
+  {
+    slug: 'cancelamentos',
+    label: 'Granatum Cancelamentos',
+    description: 'Radar de cancelamentos, lançamentos e gestão de contratos',
+    num: 'Painel 05',
+    url: import.meta.env.VITE_URL_CANCELAMENTOS || '#',
+    color: '#8b5cf6',
+  },
 ]
 
 // Origens autorizadas a receber token via postMessage.

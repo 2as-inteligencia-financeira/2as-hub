@@ -19,10 +19,13 @@ const ANON_KEY     = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_
 const ALLOWED_ORIGINS = [
   'https://painel-direcaoconcursos.vercel.app',
   'https://direcao.2asfinancas.com',
+  'https://granatum-cancelamentos-2as-financas.vercel.app',
+  'https://cancelamentos.2asfinancas.com',
   ...(process.env.NODE_ENV !== 'production' ? [
     'http://localhost:5173',
     'http://localhost:5174',
     'http://localhost:5175',
+    'http://localhost:5176',
     'http://localhost:4173',
   ] : []),
 ]
@@ -32,6 +35,10 @@ const CREDENTIALS = {
   direcao: {
     user:     process.env.DIRECAO_BASIC_AUTH_USER,
     password: process.env.DIRECAO_BASIC_AUTH_PASSWORD,
+  },
+  cancelamentos: {
+    user:     process.env.CANCELAMENTOS_BASIC_AUTH_USER,
+    password: process.env.CANCELAMENTOS_BASIC_AUTH_PASSWORD,
   },
 }
 
