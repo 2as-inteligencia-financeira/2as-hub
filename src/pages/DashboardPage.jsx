@@ -39,7 +39,7 @@ const ALL_PANELS = [
   },
   {
     slug: 'cancelamentos',
-    label: 'Granatum Cancelamentos',
+    label: 'Direção Concursos - Cancelamentos',
     description: 'Radar de cancelamentos, lançamentos e gestão de contratos',
     num: 'Painel 05',
     url: import.meta.env.VITE_URL_CANCELAMENTOS || '#',
