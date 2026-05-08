@@ -7,7 +7,7 @@ import styles from './DashboardPage.module.css'
 const ALL_PANELS = [
   {
     slug: 'financas',
-    label: 'Luniq Finanças',
+    label: '2AS Finanças',
     description: 'DRE, fluxo de caixa, margens e indicadores em tempo real',
     num: 'Painel 01',
     url: import.meta.env.VITE_URL_FINANCAS || '#',
@@ -174,7 +174,7 @@ export default function DashboardPage() {
 
       <main className={styles.main}>
         <div className={styles.welcome}>
-          <p className={styles.welcomeEyebrow}>Luniq Inteligência Financeira</p>
+          <p className={styles.welcomeEyebrow}>2AS Inteligência Financeira</p>
           <h1>Olá{profile?.nome ? `, ${profile.nome.split(' ')[0]}` : ''}.</h1>
           <p>Selecione o painel que deseja acessar</p>
         </div>

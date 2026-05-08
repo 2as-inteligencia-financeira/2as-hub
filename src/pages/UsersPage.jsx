@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase'
 import styles from './UsersPage.module.css'
 
 const PANELS = [
-  { slug: 'financas', label: 'Luniq Finanças', icon: '💰' },
+  { slug: 'financas', label: '2AS Finanças', icon: '💰' },
   { slug: 'aulas',   label: 'Gestão de Aulas', icon: '🎓' },
   { slug: 'brand',   label: 'Brand Studio',    icon: '🎨' },
 ]

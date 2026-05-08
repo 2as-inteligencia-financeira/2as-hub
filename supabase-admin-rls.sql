@@ -1,5 +1,5 @@
 -- ============================================================
---  Luniq Hub · RLS para Admin de Usuários
+--  2AS Hub · RLS para Admin de Usuários
 --  Rodar no SQL Editor do Supabase uma única vez
 -- ============================================================
 

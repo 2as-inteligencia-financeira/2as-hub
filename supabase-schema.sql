@@ -1,5 +1,5 @@
 -- =====================================================
--- LUNIQ CENTRAL — Schema de autenticação e controle
+-- 2AS CENTRAL — Schema de autenticação e controle
 -- Rodar no SQL Editor do Supabase: fxjrknvaqioabykebibi
 -- =====================================================
 
@@ -76,4 +76,4 @@ create policy "Admin gerencia todos os painéis"
 -- OPCIONAL: tornar você admin (troque pelo seu email)
 -- =====================================================
 -- update public.profiles set role = 'admin'
--- where email = 'anderson@luniqfinancas.com';
+-- where email = 'anderson@2asfinancas.com';
