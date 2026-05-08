@@ -36,31 +36,55 @@ const CREDENTIALS = {
 }
 
 async function verifyUser(authHeader) {
-  if (!authHeader?.startsWith('Bearer ')) return false
+  if (!authHeader?.startsWith('Bearer ')) return null
   const supa = createClient(SUPABASE_URL, ANON_KEY)
   const { data: { user }, error } = await supa.auth.getUser(authHeader.slice(7))
-  return !error && !!user
+  return !error && user ? user : null
+}
+
+async function hasPanelAccess(userId, slug) {
+  const supa = createClient(SUPABASE_URL, ANON_KEY)
+  const { data: profile } = await supa
+    .from('profiles')
+    .select('role')
+    .eq('id', userId)
+    .maybeSingle()
+
+  if (profile?.role === 'admin') return true
+
+  const { data: userPanel } = await supa
+    .from('user_panels')
+    .select('panel')
+    .eq('user_id', userId)
+    .eq('panel', slug)
+    .maybeSingle()
+
+  return !!userPanel
 }
 
 export default async function handler(req, res) {
   const origin = req.headers.origin || ''
-  if (ALLOWED_ORIGINS.includes(origin)) {
+  const isAllowedOrigin = !!origin && ALLOWED_ORIGINS.includes(origin)
+  if (isAllowedOrigin) {
     res.setHeader('Access-Control-Allow-Origin', origin)
     res.setHeader('Vary', 'Origin')
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Authorization')
+  if (!isAllowedOrigin) return res.status(403).json({ error: 'Origem não permitida.' })
   if (req.method === 'OPTIONS') return res.status(200).end()
   if (req.method !== 'GET') return res.status(405).json({ error: 'Método não permitido.' })
 
-  const isAuth = await verifyUser(req.headers.authorization)
-  if (!isAuth) return res.status(403).json({ error: 'Acesso negado.' })
+  const user = await verifyUser(req.headers.authorization)
+  if (!user) return res.status(403).json({ error: 'Acesso negado.' })
 
   const { slug } = req.query
   const creds = CREDENTIALS[slug]
   if (!creds?.user || !creds?.password) {
     return res.status(404).json({ error: 'Credenciais não configuradas.' })
   }
+  const hasAccess = await hasPanelAccess(user.id, slug)
+  if (!hasAccess) return res.status(403).json({ error: 'Sem permissão para este painel.' })
 
   return res.status(200).json({ user: creds.user, password: creds.password })
 }
