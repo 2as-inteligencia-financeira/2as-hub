@@ -29,6 +29,14 @@ const ALL_PANELS = [
     url: import.meta.env.VITE_URL_BRAND || '#',
     color: '#22c55e',
   },
+  {
+    slug: 'direcao',
+    label: 'Direção Concursos',
+    description: 'DRE, fluxo de caixa, operações e gestão acadêmica',
+    num: 'Painel 04',
+    url: import.meta.env.VITE_URL_DIRECAO || '#',
+    color: '#ff6600',
+  },
 ]
 
 // Origens autorizadas a receber token via postMessage.
