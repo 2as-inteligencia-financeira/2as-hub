@@ -34,7 +34,7 @@ const ALL_PANELS = [
     label: 'Direção Concursos',
     description: 'DRE, fluxo de caixa, operações e gestão acadêmica',
     num: 'Painel 04',
-    url: import.meta.env.VITE_URL_DIRECAO || '#',
+    url: import.meta.env.VITE_URL_DIRECAO || 'https://direcao.2asfinancas.com',
     color: '#ff6600',
   },
 ]
