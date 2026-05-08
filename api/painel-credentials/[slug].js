@@ -44,13 +44,18 @@ const CREDENTIALS = {
 
 async function verifyUser(authHeader) {
   if (!authHeader?.startsWith('Bearer ')) return null
+  const token = authHeader.slice(7)
   const supa = createClient(SUPABASE_URL, ANON_KEY)
-  const { data: { user }, error } = await supa.auth.getUser(authHeader.slice(7))
-  return !error && user ? user : null
+  const { data: { user }, error } = await supa.auth.getUser(token)
+  return !error && user ? { ...user, _token: token } : null
 }
 
-async function hasPanelAccess(userId, slug) {
-  const supa = createClient(SUPABASE_URL, ANON_KEY)
+async function hasPanelAccess(userId, slug, accessToken) {
+  // Usa o JWT do usuário para que a RLS consiga ver o perfil/permissões corretas
+  const supa = createClient(SUPABASE_URL, ANON_KEY, {
+    global: { headers: { Authorization: `Bearer ${accessToken}` } },
+  })
+
   const { data: profile } = await supa
     .from('profiles')
     .select('role')
@@ -90,7 +95,7 @@ export default async function handler(req, res) {
   if (!creds?.user || !creds?.password) {
     return res.status(404).json({ error: 'Credenciais não configuradas.' })
   }
-  const hasAccess = await hasPanelAccess(user.id, slug)
+  const hasAccess = await hasPanelAccess(user.id, slug, user._token)
   if (!hasAccess) return res.status(403).json({ error: 'Sem permissão para este painel.' })
 
   return res.status(200).json({ user: creds.user, password: creds.password })
