@@ -34,7 +34,7 @@ const ALL_PANELS = [
     label: 'Direção Concursos',
     description: 'DRE, fluxo de caixa, operações e gestão acadêmica',
     num: 'Painel 04',
-    url: import.meta.env.VITE_URL_DIRECAO || 'https://direcao.2asfinancas.com',
+    url: import.meta.env.VITE_URL_DIRECAO || 'https://painel-direcaoconcursos.vercel.app',
     color: '#ff6600',
   },
 ]
@@ -117,9 +117,9 @@ export default function DashboardPage() {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) return
 
-      // Abre a janela — sem nenhum token na URL
-      const win = window.open(panel.url, '_blank')
-      if (!win) return // pop-up bloqueado
+      // IMPORTANTE: registrar o listener *antes* de window.open().
+      // Se o painel carregar do cache e postar painel:ready rápido, eventos perdidos causam loop de login.
+      let win = null
 
       const handler = (event) => {
         // Verifica se a origem é confiável
@@ -127,6 +127,7 @@ export default function DashboardPage() {
         if (event.data?.type !== 'painel:ready') return
 
         // Envia token apenas para a origem que mandou o ping
+        if (!win || win.closed) return
         win.postMessage(
           {
             type:          'painel:token',
@@ -150,6 +151,13 @@ export default function DashboardPage() {
 
       window.addEventListener('message', handler)
       listenersRef.current.push({ handler, timeout })
+
+      // Abre a janela — sem nenhum token na URL
+      win = window.open(panel.url, '_blank')
+      if (!win) {
+        cleanup()
+        return
+      }
     })
   }
 
