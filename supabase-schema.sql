@@ -35,7 +35,7 @@ create trigger on_auth_user_created
 create table if not exists public.user_panels (
   id         bigint generated always as identity primary key,
   user_id    uuid not null references auth.users(id) on delete cascade,
-  panel      text not null check (panel in ('painel', 'financas', 'admissao', 'aulas', 'brand', 'direcao')),
+  panel      text not null check (panel in ('painel', 'financas', 'admissao', 'brand', 'direcao', 'cancelamentos', 'orcamento')),
   granted_at timestamptz default now(),
   unique (user_id, panel)
 );
@@ -50,7 +50,7 @@ begin
 
   alter table public.user_panels
     add constraint user_panels_panel_check
-    check (panel in ('painel', 'financas', 'admissao', 'aulas', 'brand', 'direcao'));
+    check (panel in ('painel', 'financas', 'admissao', 'brand', 'direcao', 'cancelamentos', 'orcamento'));
 end $$;
 
 -- 3. RLS — Row Level Security

@@ -14,7 +14,9 @@ const ALLOWED_ORIGINS = [
 ]
 
 // ── Fix 3: slugs de painel válidos ──────────────────────────────────────────
-const VALID_PANEL_SLUGS = new Set(['financas', 'aulas', 'brand', 'direcao'])
+const VALID_PANEL_SLUGS = new Set([
+  'financas', 'brand', 'direcao', 'cancelamentos', 'orcamento', 'admissao', 'painel',
+])
 
 // ── Fix 5: rate limiting simples por IP ─────────────────────────────────────
 // Por instância serverless — protege contra bursts, não substitui WAF

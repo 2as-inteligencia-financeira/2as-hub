@@ -6,9 +6,12 @@ import styles from './UsersPage.module.css'
 
 const PANELS = [
   { slug: 'financas', label: '2AS Finanças', icon: '💰' },
-  { slug: 'aulas',   label: 'Gestão de Aulas', icon: '🎓' },
-  { slug: 'brand',   label: 'Brand Studio',    icon: '🎨' },
+  { slug: 'brand', label: 'Brand Studio', icon: '🎨' },
   { slug: 'direcao', label: 'Direção Concursos', icon: '📊' },
+  { slug: 'cancelamentos', label: 'Direção — Cancelamentos', icon: '↩' },
+  { slug: 'orcamento', label: 'Módulo Orçamento 2AS', icon: '◫' },
+  { slug: 'admissao', label: 'Admissão digital', icon: '📋' },
+  { slug: 'painel', label: 'Painel legado (painel.*)', icon: '◎' },
 ]
 
 const ROLES = [
