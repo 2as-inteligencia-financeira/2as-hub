@@ -45,12 +45,7 @@ function shouldProcess(filePath) {
 }
 
 function migrateContent(content) {
-  const oldDomain = ['luniqfinancas', 'com'].join('.');
-  const newDomain = ['2asfinancas', 'com'].join('.');
-
-  return content
-    .replaceAll(oldDomain, newDomain)
-    .replaceAll(`@${newDomain}`, `@${oldDomain}`);
+  return content.replaceAll('luniqfinancas.com', '2asfinancas.com');
 }
 
 async function walk(dir, files = []) {
