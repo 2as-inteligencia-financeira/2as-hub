@@ -43,7 +43,7 @@ const ALL_PANELS = [
     description: 'Autorização, planejamento e realizado de orçamento ligado ao Painel de Inteligência',
     num: 'Painel 05',
     // Fallback público quando a env ainda não foi definida na Vercel (evita card “morto” com #).
-    url: import.meta.env.VITE_URL_MODULO_ORCAMENTO || 'https://2as-orcamento.vercel.app',
+    url: import.meta.env.VITE_URL_MODULO_ORCAMENTO || 'https://orcamento.2asfinancas.com',
     color: '#eab308',
   },
 ]
