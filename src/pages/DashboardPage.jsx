@@ -45,6 +45,14 @@ const ALL_PANELS = [
     url: import.meta.env.VITE_URL_CANCELAMENTOS || '#',
     color: '#8b5cf6',
   },
+  {
+    slug: 'orcamento',
+    label: 'Módulo Orçamento 2AS',
+    description: 'Autorização, planejamento e realizado de orçamento ligado ao Painel de Inteligência',
+    num: 'Painel 06',
+    url: import.meta.env.VITE_URL_MODULO_ORCAMENTO || '#',
+    color: '#eab308',
+  },
 ]
 
 // Origens autorizadas a receber token via postMessage.
