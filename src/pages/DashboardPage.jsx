@@ -4,47 +4,57 @@ import { useAuth } from '../contexts/AuthContext'
 import { supabase } from '../lib/supabase'
 import styles from './DashboardPage.module.css'
 
+const SECTIONS = [
+  { key: 'ativo',          label: 'Projetos Ativos' },
+  { key: 'desenvolvimento', label: 'Em Desenvolvimento' },
+  { key: 'marca',          label: 'Marca' },
+]
+
 const ALL_PANELS = [
   {
     slug: 'financas',
     label: '2AS Finanças',
     description: 'DRE, fluxo de caixa, margens e indicadores em tempo real',
-    num: 'Painel 01',
+    num: '01',
+    section: 'ativo',
     url: import.meta.env.VITE_URL_FINANCAS || '#',
     color: '#f59e0b',
-  },
-  {
-    slug: 'brand',
-    label: 'Brand Studio',
-    description: 'Identidade visual, logos e apresentações',
-    num: 'Painel 02',
-    url: import.meta.env.VITE_URL_BRAND || '#',
-    color: '#22c55e',
   },
   {
     slug: 'direcao',
     label: 'Direção Concursos',
     description: 'DRE, fluxo de caixa, operações e gestão acadêmica',
-    num: 'Painel 03',
-    url: import.meta.env.VITE_URL_DIRECAO || 'https://painel-direcaoconcursos.vercel.app',
+    num: '02',
+    section: 'ativo',
+    url: import.meta.env.VITE_URL_DIRECAO || 'https://direcao.2asfinancas.com',
     color: '#ff6600',
   },
   {
     slug: 'cancelamentos',
-    label: 'Direção Concursos - Cancelamentos',
+    label: 'Cancelamentos — Direção',
     description: 'Radar de cancelamentos, lançamentos e gestão de contratos',
-    num: 'Painel 04',
-    url: import.meta.env.VITE_URL_CANCELAMENTOS || '#',
+    num: '03',
+    section: 'ativo',
+    url: import.meta.env.VITE_URL_CANCELAMENTOS || 'https://cancelamentos.2asfinancas.com',
     color: '#8b5cf6',
   },
   {
     slug: 'orcamento',
-    label: 'Módulo Orçamento 2AS',
+    label: 'Módulo Orçamento',
     description: 'Autorização, planejamento e realizado de orçamento ligado ao Painel de Inteligência',
-    num: 'Painel 05',
-    // Fallback público quando a env ainda não foi definida na Vercel (evita card “morto” com #).
+    num: '04',
+    section: 'desenvolvimento',
     url: import.meta.env.VITE_URL_MODULO_ORCAMENTO || 'https://orcamento.2asfinancas.com',
     color: '#eab308',
+  },
+  {
+    slug: 'brand',
+    label: 'Brand Studio',
+    description: 'Identidade visual, logos e apresentações',
+    num: '05',
+    section: 'marca',
+    url: import.meta.env.VITE_URL_BRAND || '#',
+    color: '#22c55e',
   },
 ]
 
@@ -212,25 +222,34 @@ export default function DashboardPage() {
             <p>Entre em contato com o administrador.</p>
           </div>
         ) : (
-          <div className={styles.grid}>
-            {allowedPanels.map(panel => (
-              <button
-                key={panel.slug}
-                className={styles.card}
-                onClick={() => openPanel(panel)}
-                style={{ '--accent': panel.color }}
-              >
-                <div className={styles.cardTop}>
-                  <span className={styles.cardNum}>{panel.num}</span>
-                  <span className={styles.cardArrow}>→</span>
+          SECTIONS.map(section => {
+            const panels = allowedPanels.filter(p => p.section === section.key)
+            if (panels.length === 0) return null
+            return (
+              <div key={section.key} className={styles.section}>
+                <h2 className={styles.sectionLabel}>{section.label}</h2>
+                <div className={styles.grid}>
+                  {panels.map(panel => (
+                    <button
+                      key={panel.slug}
+                      className={styles.card}
+                      onClick={() => openPanel(panel)}
+                      style={{ '--accent': panel.color }}
+                    >
+                      <div className={styles.cardTop}>
+                        <span className={styles.cardNum}>{panel.num}</span>
+                        <span className={styles.cardArrow}>→</span>
+                      </div>
+                      <div className={styles.cardBody}>
+                        <h2 className={styles.cardTitle}>{panel.label}</h2>
+                        <p className={styles.cardDesc}>{panel.description}</p>
+                      </div>
+                    </button>
+                  ))}
                 </div>
-                <div className={styles.cardBody}>
-                  <h2 className={styles.cardTitle}>{panel.label}</h2>
-                  <p className={styles.cardDesc}>{panel.description}</p>
-                </div>
-              </button>
-            ))}
-          </div>
+              </div>
+            )
+          })
         )}
       </main>
     </div>
