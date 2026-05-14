@@ -8,6 +8,7 @@ const SECTIONS = [
   { key: 'ativo',          label: 'Projetos Ativos' },
   { key: 'desenvolvimento', label: 'Em Desenvolvimento' },
   { key: 'marca',          label: 'Marca' },
+  { key: 'pessoal',        label: 'Pessoal' },
 ]
 
 const ALL_PANELS = [
@@ -55,6 +56,16 @@ const ALL_PANELS = [
     section: 'marca',
     url: import.meta.env.VITE_URL_BRAND || '#',
     color: '#22c55e',
+  },
+  {
+    slug: 'planodeestudos',
+    label: 'Plano de Estudos',
+    description: 'Plataforma de estudos — Quadrix · Cargo 400 · 06/09/2026',
+    num: '06',
+    section: 'pessoal',
+    url: import.meta.env.VITE_URL_PLANODEESTUDOS || '#',
+    color: '#6366f1',
+    noAuth: true,
   },
 ]
 
@@ -129,9 +140,11 @@ export default function DashboardPage() {
     }
   }, [])
 
-  // Fix 1: abre painel e entrega token via postMessage, nunca via URL
+  // Abre painel e entrega token via postMessage (nunca via URL).
+  // Painéis estáticos com noAuth:true abrem diretamente sem aguardar token.
   function openPanel(panel) {
     if (panel.url === '#') return
+    if (panel.noAuth) { window.open(panel.url, '_blank'); return }
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) return
